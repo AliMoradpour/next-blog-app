@@ -1,8 +1,13 @@
+import { Metadata } from "next";
 import { ReactNode } from "react";
 
 type LayoutProps = {
   children: ReactNode;
 };
+
+export const metadata : Metadata = { 
+  title: "بلاگ ها"
+}
 
 const Layout = ({ children }: LayoutProps) => {
   return (
