@@ -2,8 +2,8 @@
 
 import { fontFamily } from "tailwindcss/defaultTheme";
 
-type variableNameType = string
-type opacityValueType = number
+type variableNameType = string;
+type opacityValueType = undefined | number;
 
 function withOpacity(variableName: variableNameType) {
   return ({ opacityValue }: opacityValueType) => {
