@@ -1,7 +1,6 @@
 "use client";
 import useMoveBack from "@/hooks/useMoveBack";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
 
 function NotFound() {
     const moveBack = useMoveBack();
