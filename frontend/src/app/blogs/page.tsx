@@ -1,18 +1,18 @@
-const BlogPage = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/list`);
-  const {
-    data: { posts },
-  } = await res.json();
+import { Suspense } from "react";
+import PostList from "./_components/PostList";
+import Spinner from "@/ui/Spinner";
 
-  type PostType = {
-    title: string;
-  };
+const BlogPage = () => {
 
   return (
     <div>
-      {posts.map((post: PostType) => (
-        <div>{post.title}</div>
-      ))}
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, corrupti rem libero ipsam iure nulla
+        possimus commodi inventore in est nemo debitis neque eaque necessitatibus dolor dolores aut pariatur et.
+      </p>
+      <Suspense fallback={<Spinner />}>
+        <PostList />
+      </Suspense>
     </div>
   );
 };
