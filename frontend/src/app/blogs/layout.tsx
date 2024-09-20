@@ -11,6 +11,7 @@ export const metadata : Metadata = {
 }
 
 const Layout = ({ children }: LayoutProps) => {
+
   return (
     <div>
       <h1 className="text-lg font-bold mb-12">لیست بلاگ ها</h1>
