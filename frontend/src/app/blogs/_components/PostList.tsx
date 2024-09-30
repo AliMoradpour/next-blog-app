@@ -8,13 +8,21 @@ const PostList = async () => {
 
   type PostType = {
     title: string;
-    coverImage: string;
+    coverImageUrl: string;
   };
   return posts.length > 0 ? (
     <div className="grid grid-cols-12 gap-8">
       {posts.map((post: PostType) => (
         <div className="col-span-12 sm:col-span-6 lg:col-span-4 border border-secondary-100 p-2 rounded-lg">
-          <Image src={post.coverImage} alt="cover image" width={400} height={400}/>
+          <div className="relative aspect-video overflow-hidden rounded-md">
+            <Image
+              src={post.coverImageUrl}
+              alt="cover image"
+              fill
+              className="object-cover object-center hover:scale-110 transition-all duration-300 ease-out"
+              quality={80}
+            />
+          </div>
         </div>
       ))}
     </div>
