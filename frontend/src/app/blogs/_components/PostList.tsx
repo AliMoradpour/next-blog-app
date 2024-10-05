@@ -1,4 +1,7 @@
-import Image from "next/image";
+import Link from "next/link";
+import CoverImage from "./CoverImage";
+import { ClockIcon } from "@heroicons/react/24/outline";
+import Author from "./Author";
 
 const PostList = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/list`);
@@ -9,19 +12,35 @@ const PostList = async () => {
   type PostType = {
     title: string;
     coverImageUrl: string;
+    slug: string;
+    readingTime: number;
+    author: {
+      avatarUrl: string;
+      name: string;
+    };
   };
+
   return posts.length > 0 ? (
     <div className="grid grid-cols-12 gap-8">
       {posts.map((post: PostType) => (
         <div className="col-span-12 sm:col-span-6 lg:col-span-4 border border-secondary-100 p-2 rounded-lg">
-          <div className="relative aspect-video overflow-hidden rounded-md">
-            <Image
-              src={post.coverImageUrl}
-              alt="cover image"
-              fill
-              className="object-cover object-center hover:scale-110 transition-all duration-300 ease-out"
-              quality={80}
-            />
+          <CoverImage {...post} />
+          {/* post content */}
+          <div>
+            <Link href={`/blogs/${post.slug}`}>
+              <h2 className="mb-4 font-bold text-secondary-700">{post.title}</h2>
+            </Link>
+
+            {/* post author - reading time */}
+            <div className="flex items-center justify-between">
+              <Author {...post.author} />
+              <div className="flex items-center text-[10px] text-secondary-500">
+                <ClockIcon className="w-4 h-4 stroke-secondary-500 ml-1" />
+                <span className="ml-1"> خواندن:</span>
+                <span className="ml-1 leading-3">{post.readingTime}</span>
+                <span>دقیقه</span>
+              </div>
+            </div>
           </div>
         </div>
       ))}
