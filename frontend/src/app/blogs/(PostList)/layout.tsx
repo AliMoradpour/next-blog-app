@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { ReactNode, Suspense } from "react";
-import CategoryList from "./_components/CategoryList";
+import CategoryList from "../_components/CategoryList";
 import Spinner from "@/ui/Spinner";
 
 type LayoutProps = {
