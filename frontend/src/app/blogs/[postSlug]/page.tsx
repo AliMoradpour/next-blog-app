@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 type SinglePostProps = {
   params: {
@@ -8,9 +9,10 @@ type SinglePostProps = {
 
 const SinglePost = async ({ params }: SinglePostProps) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/slug/${params.postSlug}`);
-  const {
-    data: { post },
-  } = await res.json();
+  const { data } = await res.json();
+  const { post } = data || {};
+
+  if (!post) notFound();
 
   return (
     <div className="text-secondary-600 max-w-screen-md mx-auto">
