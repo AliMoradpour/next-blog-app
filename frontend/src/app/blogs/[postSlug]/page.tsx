@@ -1,5 +1,8 @@
+import { getPostBySlug } from "@/services/postServices";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+
+
 
 type SinglePostProps = {
   params: {
@@ -7,10 +10,16 @@ type SinglePostProps = {
   };
 };
 
+export const generateMetadata = async ({ params }: SinglePostProps) => {
+  const post = await getPostBySlug(params.postSlug);
+
+  return {
+    title: `پست ${post.title}`,
+  };
+};
+
 const SinglePost = async ({ params }: SinglePostProps) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/slug/${params.postSlug}`);
-  const { data } = await res.json();
-  const { post } = data || {};
+  const post = await getPostBySlug(params.postSlug);
 
   if (!post) notFound();
 

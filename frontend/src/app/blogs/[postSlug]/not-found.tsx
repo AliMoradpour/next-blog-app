@@ -1,6 +1,5 @@
 "use client";
 import useMoveBack from "@/hooks/useMoveBack";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 function NotFound() {
