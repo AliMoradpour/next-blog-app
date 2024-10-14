@@ -16,7 +16,8 @@ export async function generateStaticParams() {
   return slugs;
 }
 
-export const generateMetadata = async ({ params }: SinglePostProps) => {
+export const generateMetadata = async (props: SinglePostProps) => {
+  const params = await props.params;
   const post = await getPostBySlug(params.slug);
 
   return {
@@ -24,7 +25,8 @@ export const generateMetadata = async ({ params }: SinglePostProps) => {
   };
 };
 
-const SinglePost = async ({ params }: SinglePostProps) => {
+const SinglePost = async (props: SinglePostProps) => {
+  const params = await props.params;
   const post = await getPostBySlug(params.slug);
 
   if (!post) notFound();
