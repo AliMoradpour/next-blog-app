@@ -1,17 +1,23 @@
-import { getPostBySlug } from "@/services/postServices";
+import { getPostBySlug, getPosts } from "@/services/postServices";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-
-
 type SinglePostProps = {
   params: {
-    postSlug: string;
+    slug: string;
   };
 };
 
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  const slugs = posts.map((post: { slug: string }) => ({ slug: post.slug }));
+  return slugs;
+}
+
 export const generateMetadata = async ({ params }: SinglePostProps) => {
-  const post = await getPostBySlug(params.postSlug);
+  const post = await getPostBySlug(params.slug);
 
   return {
     title: `پست ${post.title}`,
@@ -19,7 +25,7 @@ export const generateMetadata = async ({ params }: SinglePostProps) => {
 };
 
 const SinglePost = async ({ params }: SinglePostProps) => {
-  const post = await getPostBySlug(params.postSlug);
+  const post = await getPostBySlug(params.slug);
 
   if (!post) notFound();
 

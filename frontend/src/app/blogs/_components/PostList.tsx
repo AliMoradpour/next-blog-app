@@ -4,12 +4,11 @@ import { ClockIcon } from "@heroicons/react/24/outline";
 import Author from "./Author";
 import PostInteraction from "./PostInteraction";
 import { toPersianDigits } from "@/utils/numberFormatter";
+import { getPosts } from "@/services/postServices";
 
 const PostList = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/list`);
-  const {
-    data: { posts },
-  } = await res.json();
+  
+  const posts = await getPosts();
 
   type PostType = {
     title: string;
@@ -44,8 +43,7 @@ const PostList = async () => {
                 <span>دقیقه</span>
               </div>
             </div>
-            <PostInteraction {...post}/>
-            
+            <PostInteraction {...post} />
           </div>
         </div>
       ))}
