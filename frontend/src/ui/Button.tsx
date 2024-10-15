@@ -1,4 +1,3 @@
-import { CssVariable } from "next/dist/compiled/@next/font";
 import { MouseEventHandler, ReactElement } from "react";
 
 const btnType = {
