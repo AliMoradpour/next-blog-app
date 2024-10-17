@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",
+    "@hookform/resolvers": "^3.9.0",
     "next": "^15.0.0-canary.190",
     "react": "^19.0.0-rc-cd22717c-20241013",
     "react-dom": "^19.0.0-rc-cd22717c-20241013",
-    "react-hook-form": "^7.53.0"
+    "react-hook-form": "^7.53.0",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",

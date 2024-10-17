@@ -3,7 +3,7 @@ type RHFTextFieldProps = {
   label: string; // Assuming label is required
   name: string; // Assuming name is required
   dir?: "rtl" | "ltr"; // Optional, defaults to "rtl"
-  register: (name: string, validationSchema?: object) => void; // Assuming it's from react-hook-form
+  isRequired?: boolean;
   errors?: Record<string, any>; // Assuming errors is an object with key-value pairs for form errors
   validationSchema?: object; // Optional, defaults to an empty object
   [key: string]: any; // For any other props passed via `...rest`
@@ -15,6 +15,7 @@ export default function RHFTextField({
   name,
   dir = "rtl",
   register,
+  isRequired,
   errors,
   validationSchema = {},
   ...rest
@@ -25,6 +26,7 @@ export default function RHFTextField({
     <div className={`textField relative ${hasError ? "textField--invalid" : ""}`}>
       <label htmlFor={name} className="mb-2 block text-secondary-700">
         {label}
+        {isRequired && <span className="text-error">*</span>}
       </label>
       <input
         autoComplete="off"

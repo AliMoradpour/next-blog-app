@@ -1,4 +1,4 @@
-import { MouseEventHandler, ReactElement } from "react";
+import { MouseEventHandler,  ReactNode } from "react";
 
 const btnType = {
   primary: "btn--primary",
@@ -8,7 +8,7 @@ const btnType = {
 };
 
 interface ButtonProps {
-  children?: ReactElement;
+  children?: ReactNode;
   onClick?: MouseEventHandler;
   variant: string;
   className?: string;
