@@ -49,7 +49,7 @@ const Signin = () => {
         />
 
         <Button type="submit" variant="primary" className="w-full">
-          تایید
+          ورود
         </Button>
 
         <Link href="/signup" className="w-full text-center text-secondary-400">

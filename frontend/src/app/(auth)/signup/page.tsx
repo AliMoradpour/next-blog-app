@@ -57,7 +57,7 @@ const Signup = () => {
         />
 
         <Button type="submit" variant="primary" className="w-full">
-          تایید
+          ثبت نام
         </Button>
 
         <Link href="/signin" className="mt-6 text-center text-secondary-500">
