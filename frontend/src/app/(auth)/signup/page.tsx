@@ -4,7 +4,7 @@ import { signupApi } from "@/services/authService";
 import Button from "@/ui/Button";
 import RHFTextField from "@/ui/RHFTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as yup from "yup";
@@ -31,13 +31,10 @@ const Signup = () => {
     mode: "onTouched",
   });
 
-  const router = useRouter();
-
   const onSubmit = async (values: any) => {
     try {
       const { user, message } = await signupApi(values);
       toast.success(message);
-      router.push("/");
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
@@ -62,6 +59,10 @@ const Signup = () => {
         <Button type="submit" variant="primary" className="w-full">
           تایید
         </Button>
+
+        <Link href="/signin" className="mt-6 text-center text-secondary-500">
+          ورود
+        </Link>
       </form>
     </div>
   );
