@@ -1,9 +1,12 @@
 "use client";
 
+import { signupApi } from "@/services/authService";
 import Button from "@/ui/Button";
 import RHFTextField from "@/ui/RHFTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import * as yup from "yup";
 
 const schema = yup
@@ -14,7 +17,7 @@ const schema = yup
       .max(30, "نباید بیشتر از 30 کاراکتر باشد")
       .required("نام و نام خانوادگی الزامی است."),
     email: yup.string().email("ایمیل نامعتبر است").required("ایمیل الزامی است"),
-    password: yup.string().required("پسورد الزامی است"),
+    password: yup.string().min(8, "حداقل باید 8 کاراکتر باشد").required("پسورد الزامی است"),
   })
   .required();
 
@@ -28,8 +31,16 @@ const Signup = () => {
     mode: "onTouched",
   });
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const router = useRouter();
+
+  const onSubmit = async (values: any) => {
+    try {
+      const { user, message } = await signupApi(values);
+      toast.success(message);
+      router.push("/");
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
   };
 
   return (
