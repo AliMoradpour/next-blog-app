@@ -7,3 +7,6 @@ export const signupApi = async (data: string[]) => {
 export const signinApi = async (data: string[]) => {
   return http.post("/user/signin", data).then(({ data }) => data.data);
 };
+export const getUserApi = async (data: string[]) => {
+  return http.post("/user/profile").then(({ data }) => data.data);
+};
