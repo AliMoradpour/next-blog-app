@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { signupApi } from "@/services/authService";
 import Button from "@/ui/Button";
 import RHFTextField from "@/ui/RHFTextField";
+import SpinnerMini from "@/ui/SpinnerMini";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -32,7 +33,7 @@ const Signup = () => {
     mode: "onTouched",
   });
 
-  const {signup} = useAuth();
+  const { signup } = useAuth();
   const onSubmit = async (values: any) => {
     await signup();
   };
@@ -53,9 +54,15 @@ const Signup = () => {
           errors={errors}
         />
 
-        <Button type="submit" variant="primary" className="w-full">
-          ثبت نام
-        </Button>
+        <div>
+          {isLoading ? (
+            <SpinnerMini />
+          ) : (
+            <Button type="submit" variant="primary" className="w-full">
+              ثبت نام
+            </Button>
+          )}
+        </div>
 
         <Link href="/signin" className="mt-6 text-center text-secondary-500">
           ورود

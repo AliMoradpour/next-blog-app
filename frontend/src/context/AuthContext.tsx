@@ -1,25 +1,31 @@
 "use client";
-import { signinApi, signupApi } from "@/services/authService";
+import { getUserApi, signinApi, signupApi } from "@/services/authService";
 import { useRouter } from "next/navigation";
-import { createContext, ReactNode, useContext, useReducer, Dispatch } from "react";
+import { createContext, ReactNode, useContext, useReducer, Dispatch, useEffect } from "react";
 import toast from "react-hot-toast";
 
+// Define a more specific type for `user` if known
+interface User {
+  id: string;
+  name: string;
+}
+
 interface AuthState {
-  user: any; // Define a specific type for `user` if possible
+  user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
 }
 
 interface AuthAction {
-  type: "loading" | "rejected" | "signin" | "signup";
-  payload?: any; // Define specific types for `payload` if possible
+  type: "loading" | "rejected" | "signin" | "signup" | "user/loaded";
+  payload?: User | string | null;
 }
 
 interface AuthContextProps extends AuthState {
   dispatch: Dispatch<AuthAction>;
-  signin: (values: any) => Promise<void>; // Replace `any` with the correct type for `values`
-  signup: (values: any) => Promise<void>; // Replace `any` with the correct type for `values`
+  signin: (values: Record<string, any>) => Promise<void>;
+  signup: (values: Record<string, any>) => Promise<void>;
 }
 
 const initialState: AuthState = {
@@ -42,13 +48,21 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        error: action.payload as string,
       };
     case "signin":
     case "signup":
       return {
         ...state,
-        user: action.payload,
+        user: action.payload as User,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      };
+    case "user/loaded":
+      return {
+        ...state,
+        user: action.payload as User,
         isAuthenticated: true,
         isLoading: false,
         error: null,
@@ -60,10 +74,9 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
-
   const [{ user, isAuthenticated, isLoading, error }, dispatch] = useReducer(authReducer, initialState);
 
-  async function signin(values: any) { // Replace `any` with the specific type if known
+  async function signin(values: Record<string, any>) {
     dispatch({ type: "loading" });
 
     try {
@@ -78,7 +91,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  async function signup(values: any) { // Replace `any` with the specific type if known
+  async function signup(values: Record<string, any>) {
     dispatch({ type: "loading" });
 
     try {
@@ -92,6 +105,23 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       toast.error(errorMsg);
     }
   }
+
+  async function getUser() {
+    dispatch({ type: "loading" });
+
+    try {
+      const { user } = await getUserApi();
+      dispatch({ type: "user/loaded", payload: user });
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.message || "An error occurred";
+      dispatch({ type: "rejected", payload: errorMsg });
+      toast.error(errorMsg);
+    }
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, isLoading, error, dispatch, signin, signup }}>

@@ -5,6 +5,7 @@ import Button from "@/ui/Button";
 import RHFTextField from "@/ui/RHFTextField";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/context/AuthContext";
+import SpinnerMini from "@/ui/SpinnerMini";
 
 const schema = yup
   .object({
@@ -43,9 +44,15 @@ const Signin = () => {
           errors={errors}
         />
 
-        <Button type="submit" variant="primary" className="w-full">
-          ورود
-        </Button>
+        <div>
+          {isLoading ? (
+            <SpinnerMini />
+          ) : (
+            <Button type="submit" variant="primary" className="w-full">
+              ورود
+            </Button>
+          )}
+        </div>
 
         <Link href="/signup" className="w-full text-center text-secondary-400">
           ثبت نام
