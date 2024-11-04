@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/context/AuthContext";
 import { signupApi } from "@/services/authService";
 import Button from "@/ui/Button";
 import RHFTextField from "@/ui/RHFTextField";
@@ -31,13 +32,9 @@ const Signup = () => {
     mode: "onTouched",
   });
 
+  const {signup} = useAuth();
   const onSubmit = async (values: any) => {
-    try {
-      const { user, message } = await signupApi(values);
-      toast.success(message);
-    } catch (error) {
-      toast.error(error?.response?.data?.message);
-    }
+    await signup();
   };
 
   return (

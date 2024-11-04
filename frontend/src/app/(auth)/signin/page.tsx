@@ -3,9 +3,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import Button from "@/ui/Button";
 import RHFTextField from "@/ui/RHFTextField";
-import { signinApi } from "@/services/authService";
-import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import { useAuth } from "@/context/AuthContext";
 
 const schema = yup
   .object({
@@ -24,13 +23,9 @@ const Signin = () => {
     mode: "onTouched",
   });
 
+  const { signin } = useAuth();
   const onSubmit = async (values: any) => {
-    try {
-      const { user, message } = await signinApi(values);
-      toast.success(message);
-    } catch (error) {
-      toast.error(error?.response?.data?.message);
-    }
+    await signin();
   };
 
   return (
