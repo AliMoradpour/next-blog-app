@@ -4,9 +4,6 @@ import { ClockIcon } from "@heroicons/react/24/outline";
 import Author from "./Author";
 import PostInteraction from "./PostInteraction";
 import { toPersianDigits } from "@/utils/numberFormatter";
-import { getPosts } from "@/services/postServices";
-import setCookieOnReq from "@/utils/setCookieOnReq";
-import { cookies } from "next/headers";
 
 type PostType = {
   title: string;
@@ -16,28 +13,21 @@ type PostType = {
   commentsCount: number;
   isLiked: boolean;
   isBookmarked: boolean;
-  _id: string; // Ensure this exists if needed for PostInteraction
+  _id: string; // Ensure this exists for unique keys
   author: {
     avatarUrl: string;
     name: string;
   };
 };
 
-const PostList = async () => {
-  const cookieStore = cookies();
-  const options = setCookieOnReq(cookieStore);
+interface PostListProps {
+  posts: PostType[];
+}
 
-  let posts: PostType[] = [];
-  try {
-    posts = await getPosts(options);
-  } catch (error: any) {
-    console.error("Error fetching posts:", error.message);
-    return null; // Handle errors gracefully by rendering nothing or an error message
-  }
-
+const PostList = async ({ posts }: PostListProps): Promise<JSX.Element | null> => {
   return posts.length > 0 ? (
     <div className="grid grid-cols-12 gap-8">
-      {posts.map((post: PostType) => (
+      {posts.map((post) => (
         <div
           key={post._id} // Ensure every mapped element has a unique key
           className="col-span-12 sm:col-span-6 lg:col-span-4 border border-secondary-100 p-2 rounded-lg"
@@ -68,7 +58,9 @@ const PostList = async () => {
         </div>
       ))}
     </div>
-  ) : null;
+  ) : (
+    <p className="text-lg text-secondary-600">هیچ پستی یافت نشد!</p>
+  );
 };
 
 export default PostList;
