@@ -1,6 +1,7 @@
 import { getPostBySlug, getPosts } from "@/services/postServices";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import RelatedPost from "../_components/RelatedPost";
 
 type SinglePostProps = {
   params: {
@@ -44,8 +45,9 @@ const SinglePost = async (props: SinglePostProps) => {
           alt={post.briefText}
         />
       </div>
-      {/* {post.related.length > 0 ? <RelatedPost posts={post.related} /> : null}
-      <BlogComments post={post} /> */}
+
+      {post.related.length > 0 && <RelatedPost posts={post.related} />}
+
     </div>
   );
 };

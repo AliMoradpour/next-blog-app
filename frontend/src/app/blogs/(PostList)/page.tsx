@@ -4,31 +4,41 @@ import setCookieOnReq from "@/utils/setCookieOnReq";
 import { getPosts } from "@/services/postServices";
 import queryString from "query-string";
 
-const BlogPage = async ({ searchParams }): Promise<JSX.Element> => {
-  const queries = queryString.stringify(searchParams);
+const BlogPage = async ({ searchParams }: { searchParams: { [key: string]: string } }): Promise<JSX.Element> => {
+  // Convert searchParams to query string
+  const queries = queryString.stringify(searchParams || {});
 
   // Retrieve cookies from the request
   const cookieStore = cookies();
-
-  // Prepare options for the API request
   const options = setCookieOnReq(cookieStore);
 
-  // Fetch posts using the provided options
-  const posts = await getPosts(queries, options);
+  try {
+    // Fetch posts using the provided options
+    const posts = await getPosts(queries, options);
 
-  const { search } = searchParams;
+    const searchQuery = searchParams?.search || "";
 
-  return (
-    <>
-      {search ? (
-        <p className="mb-4 text-secondary-700">
-          {posts.length === 0 ? "هیچ پستی با این مشخصات پیدا نشد" : `نشان دادن ${posts.length} نتیجه برای`}
-          <span className="font-bold">&quot;{search}&quot;</span>
-        </p>
-      ) : null}
-      <PostList posts={posts} />
-    </>
-  );
+    return (
+      <>
+        {searchQuery && (
+          <p className="mb-4 text-secondary-700">
+            {posts.length === 0
+              ? "هیچ پستی با این مشخصات پیدا نشد"
+              : `نشان دادن ${posts.length} نتیجه برای `}
+            <span className="font-bold">&quot;{searchQuery}&quot;</span>
+          </p>
+        )}
+        <PostList posts={posts} />
+      </>
+    );
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return (
+      <p className="text-red-500">
+        مشکلی در بارگذاری پست‌ها به وجود آمده است. لطفاً دوباره تلاش کنید.
+      </p>
+    );
+  }
 };
 
 export default BlogPage;

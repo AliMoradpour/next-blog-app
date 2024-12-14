@@ -8,31 +8,45 @@ interface CategoryProps {
   params: {
     categorySlug: string;
   };
+  searchParams?: { [key: string]: string };
 }
 
 const Category = async ({ params, searchParams }: CategoryProps): Promise<JSX.Element> => {
   const { categorySlug } = params;
 
-  const queries = queryString.stringify(searchParams) + "&" + `categorySlug=${categorySlug}`;
+  // Build query string
+  const queries = queryString.stringify({
+    ...searchParams,
+    categorySlug,
+  });
 
-  // Retrieve cookies from the request
-  const cookieStore = cookies();
+  try {
+    // Retrieve cookies from the request
+    const cookieStore = cookies();
 
-  // Prepare options for the API request
-  const options = setCookieOnReq(cookieStore);
+    // Prepare options for the API request
+    const options = setCookieOnReq(cookieStore);
 
-  // Fetch posts using the provided options
-  const posts = await getPosts(queries, options);
+    // Fetch posts using the provided options
+    const posts = await getPosts(queries, options);
 
-  return (
-    <div>
-      {posts.length === 0 ? (
-        <p className="text-lg text-secondary-600">پستی در این دسته بندی پیدا نشد!</p>
-      ) : (
-        <PostList posts={posts} />
-      )}
-    </div>
-  );
+    return (
+      <div>
+        {posts.length === 0 ? (
+          <p className="text-lg text-secondary-600">پستی در این دسته بندی پیدا نشد!</p>
+        ) : (
+          <PostList posts={posts} />
+        )}
+      </div>
+    );
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return (
+      <p className="text-lg text-red-600">
+        مشکلی در بارگذاری پست‌ها به وجود آمده است. لطفاً دوباره تلاش کنید.
+      </p>
+    );
+  }
 };
 
 export default Category;
