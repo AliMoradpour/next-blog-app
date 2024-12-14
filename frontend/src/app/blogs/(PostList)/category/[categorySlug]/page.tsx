@@ -1,4 +1,8 @@
+import { getPosts } from "@/services/postServices";
+import setCookieOnReq from "@/utils/setCookieOnReq";
 import PostList from "app/blogs/_components/PostList";
+import { cookies } from "next/headers";
+import queryString from "query-string";
 
 interface CategoryProps {
   params: {
@@ -6,18 +10,19 @@ interface CategoryProps {
   };
 }
 
-const Category = async ({ params }: CategoryProps): Promise<JSX.Element> => {
+const Category = async ({ params, searchParams }: CategoryProps): Promise<JSX.Element> => {
   const { categorySlug } = params;
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/list?categorySlug=${categorySlug}`);
-  
-  if (!res.ok) {
-    console.error("Failed to fetch posts for category:", categorySlug);
-    return <p className="text-lg text-secondary-600">مشکلی در بارگذاری پست‌ها پیش آمد!</p>;
-  }
+  const queries = queryString.stringify(searchParams) + "&" + `categorySlug=${categorySlug}`;
 
-  const { data } = await res.json();
-  const { posts }: { posts: Array<any> } = data || {};
+  // Retrieve cookies from the request
+  const cookieStore = cookies();
+
+  // Prepare options for the API request
+  const options = setCookieOnReq(cookieStore);
+
+  // Fetch posts using the provided options
+  const posts = await getPosts(queries, options);
 
   return (
     <div>

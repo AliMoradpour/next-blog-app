@@ -16,9 +16,9 @@ export const getPostBySlug = async (slug: string) => {
 };
 
 // Fetch a list of posts
-export async function getPosts(options?: RequestInit) {
+export async function getPosts(queries?:string, options?: RequestInit) {
   try {
-    const res = await fetch(`${BASE_URL}/post/list`, options);
+    const res = await fetch(`${BASE_URL}/post/list?${queries}`, options);
     if (!res.ok) throw new Error("Failed to fetch posts list");
     const { data } = await res.json();
     return data?.posts || []; // Safely return posts array or an empty array
