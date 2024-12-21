@@ -1,15 +1,15 @@
 import Image from "next/image";
 
-type AvatarType = {
-  src: string;
-  width?: number;
-  alt: string;
+type AvatarProps = {
+  src?: string; // Made `src` optional since a fallback is used
+  width?: number; // Optional with a default value
+  alt: string; // Required
 };
 
-const Avatar = ({ src, width = 24, alt }: AvatarType) => {
+const Avatar: React.FC<AvatarProps> = ({ src = "/images/avatar.png", width = 24, alt }) => {
   return (
     <Image
-      src={src || "images/avatar.png"}
+      src={src}
       width={width}
       height={width}
       className="rounded-full ring-1 ring-secondary-300 ml-2"
