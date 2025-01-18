@@ -49,19 +49,14 @@ const PostComment: React.FC<PostCommentProps> = ({ post: { comments, _id: postId
         open={open}
         onClose={() => setOpen(false)}
         title={parent ? "پاسخ به نظر" : "نظر جدید"}
-        description={parent?.user.name || "نظر خود را وارد کنید"}
-      >
-        <CommentForm />
+        description={parent?.user.name || "نظر خود را وارد کنید"}>
+        <CommentForm parentId={parent ? parent._id : null} postId={postId} />
       </Modal>
 
       {/* Header Section */}
       <div className="flex flex-col items-center lg:flex-row justify-between gap-y-3 mb-8">
         <h2 className="text-2xl font-bold text-secondary-800">نظرات</h2>
-        <Button
-          variant="outline"
-          className="flex items-center py-2"
-          onClick={() => addNewCommentHandler(null)}
-        >
+        <Button variant="outline" className="flex items-center py-2" onClick={() => addNewCommentHandler(null)}>
           <QuestionMarkCircleIcon className="w-4 ml-2" />
           <span>ثبت نظر جدید</span>
         </Button>
@@ -74,10 +69,7 @@ const PostComment: React.FC<PostCommentProps> = ({ post: { comments, _id: postId
             <div key={comment._id}>
               {/* Main Comment */}
               <div className="border border-secondary-200 rounded-xl p-2 sm:p-4 mb-3">
-                <Comment
-                  comment={comment}
-                  onAddComment={() => addNewCommentHandler(comment)}
-                />
+                <Comment comment={comment} onAddComment={() => addNewCommentHandler(comment)} />
               </div>
 
               {/* Replies */}
@@ -90,8 +82,7 @@ const PostComment: React.FC<PostCommentProps> = ({ post: { comments, _id: postId
                         {
                           "last-item": index + 1 === comment.answers.length,
                         }
-                      )}
-                    >
+                      )}>
                       <Comment comment={item} />
                     </div>
                   </div>
