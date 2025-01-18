@@ -10,12 +10,12 @@ import CommentForm from "./CommentForm";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 
-// Define types for props
+// Define types for comments
 interface CommentType {
   _id: string;
   text: string;
   user: { name: string }; // Adjust based on actual user structure
-  answers?: CommentType[];
+  answers?: CommentType[]; // Nested comments (replies)
 }
 
 interface PostType {
@@ -49,8 +49,9 @@ const PostComment: React.FC<PostCommentProps> = ({ post: { comments, _id: postId
         open={open}
         onClose={() => setOpen(false)}
         title={parent ? "پاسخ به نظر" : "نظر جدید"}
-        description={parent?.user.name || "نظر خود را وارد کنید"}>
-        <CommentForm parentId={parent ? parent._id : null} postId={postId} />
+        description={parent?.user.name || "نظر خود را وارد کنید"}
+      >
+        <CommentForm onClose={() => setOpen(false)} parentId={parent ? parent._id : null} postId={postId} />
       </Modal>
 
       {/* Header Section */}
@@ -82,7 +83,8 @@ const PostComment: React.FC<PostCommentProps> = ({ post: { comments, _id: postId
                         {
                           "last-item": index + 1 === comment.answers.length,
                         }
-                      )}>
+                      )}
+                    >
                       <Comment comment={item} />
                     </div>
                   </div>

@@ -42,7 +42,7 @@
         "ui/*"
       ],
       "@/lib/*": [
-        "lib/*"
+        "src/lib/*"
       ],
       "@/styles/*": [
         "styles/*"
