@@ -6,7 +6,11 @@ import Link from "next/link";
 import SideBarNavs from "./SideBarNavs";
 import ButtonIcon from "@/ui/ButtonIcon";
 
-function SideBar({onClose}) {
+interface SidebarProps {
+  onClose?: () => void;
+}
+
+function SideBar({ onClose }: SidebarProps) {
   const { logout } = useAuth();
 
   const logoutHandler = async () => {
@@ -22,7 +26,7 @@ function SideBar({onClose}) {
           <span>نکست بلاگ</span>
         </Link>
 
-        <ButtonIcon onClose={onClose} className="block lg:hidden border-none" variant="outline">
+        <ButtonIcon onClick={onClose} className="block lg:hidden border-none" variant="outline">
           <XMarkIcon />
         </ButtonIcon>
       </div>
