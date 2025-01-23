@@ -2,6 +2,7 @@ import Table from "@/ui/Table";
 import { toLocalDateShort } from "@/utils/dataFormater";
 import { toPersianDigits } from "@/utils/numberFormatter";
 import truncateText from "@/utils/truncateText";
+import { DeletePost, UpdatePost } from "./Buttons";
 
 interface Category {
   title: string;
@@ -48,7 +49,12 @@ const PostRow: React.FC<PostRowProps> = ({ index, post }) => {
       <td>
         <span className={`badge ${typeStyle[type].className}`}>{typeStyle[type].label}</span>
       </td>
-      <td>actions ...</td>
+      <td>
+        <div className="flex items-center gap-x-3">
+          <UpdatePost id={post._id} />
+          <DeletePost id={post._id} />
+        </div>
+      </td>
     </Table.Row>
   );
 };
