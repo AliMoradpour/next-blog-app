@@ -1,5 +1,6 @@
 import { fetchCardData } from "@/services/data";
 import { Card } from "./_components/Cards";
+import PostsTable from "./posts/_/components/PostsTable";
 
 const Profile = async () => {
   const { numberOfComments, numberOfPosts, numberOfUsers } = await fetchCardData();
@@ -10,6 +11,8 @@ const Profile = async () => {
        <Card title="پست ها" value={numberOfPosts} type="posts"/>
        <Card title="نظرات" value={numberOfComments} type="comments"/>
       </div>
+
+      <PostsTable query="sort=latest&limit=5"/>
     </div>
   );
 };
