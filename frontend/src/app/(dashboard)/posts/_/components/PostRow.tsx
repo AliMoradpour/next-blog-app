@@ -1,7 +1,21 @@
 import Table from "@/ui/Table";
 
-const PostRow = ({ index, post }) => {
+interface Post {
+  title: string;
+  category: string;
+  author: string;
+  createdAt: string;
+  type: string;
+}
+
+interface PostRowProps {
+  index: number;
+  post: Post;
+}
+
+const PostRow: React.FC<PostRowProps> = ({ index, post }) => {
   const { title, category, author, createdAt, type } = post;
+
   return (
     <Table.Row>
       <td>{index + 1}</td>

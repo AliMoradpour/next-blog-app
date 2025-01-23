@@ -3,8 +3,17 @@ import Empty from "@/ui/Empty";
 import Table from "@/ui/Table";
 import PostRow from "./PostRow";
 
+interface Post {
+  _id: string;
+  title: string;
+  category: string;
+  author: string;
+  createdAt: string;
+  type: string;
+}
+
 const PostsTable = async () => {
-  const posts = await getPosts();
+  const posts: Post[] = await getPosts();
 
   if (!posts.length) return <Empty resourceName="پستی" />;
   return (
