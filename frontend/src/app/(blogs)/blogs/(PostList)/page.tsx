@@ -14,7 +14,7 @@ const BlogPage = async ({ searchParams }: { searchParams: { [key: string]: strin
 
   try {
     // Fetch posts using the provided options
-    const posts = await getPosts(queries, options);
+    const {posts} = await getPosts(queries, options);
 
     const searchQuery = searchParams?.search || "";
 

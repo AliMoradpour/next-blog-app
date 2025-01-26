@@ -13,7 +13,7 @@ interface Post {
 }
 
 const PostsTable = async ({query = ""} : {query : string}) => {
-  const posts: Post[] = await getPosts(query);
+  const {posts}: Post[] = await getPosts(query);
 
   if (!posts.length) return <Empty resourceName="پستی" />;
   return (

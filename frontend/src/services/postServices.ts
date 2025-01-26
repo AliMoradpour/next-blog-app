@@ -16,16 +16,11 @@ export const getPostBySlug = async (slug: string) => {
 };
 
 // Fetch a list of posts
-export async function getPosts(queries?:string, options?: RequestInit) {
-  try {
-    const res = await fetch(`${BASE_URL}/post/list?${queries}`, options);
-    if (!res.ok) throw new Error("Failed to fetch posts list");
-    const { data } = await res.json();
-    return data?.posts || []; // Safely return posts array or an empty array
-  } catch (error) {
-    console.error("Error in getPosts:", error);
-    throw error; // Optionally propagate the error
-  }
+export async function getPosts(queries?: string, options?: RequestInit) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/list?${queries}`, options);
+  const { data } = await res.json();
+  const { posts, totalPages } = data || {};
+  return { posts, totalPages };
 }
 
 // Like a post by its ID

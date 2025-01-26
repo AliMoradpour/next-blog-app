@@ -13,7 +13,7 @@ type SinglePostProps = {
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const posts = await getPosts();
+  const {posts} = await getPosts();
   const slugs = posts.map((post: { slug: string }) => ({ slug: post.slug }));
   return slugs;
 }

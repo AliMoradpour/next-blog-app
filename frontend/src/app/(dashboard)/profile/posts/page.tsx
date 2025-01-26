@@ -5,6 +5,7 @@ import Search from "@/ui/Search";
 import { CreatePost } from "./_/components/Buttons";
 import queryString from "query-string";
 import { getPosts } from "@/services/postServices";
+import Pagination from "@/ui/Pagination";
 
 const page = async (searchParams: any) => {
   const query = queryString.stringify(searchParams);
@@ -22,7 +23,7 @@ const page = async (searchParams: any) => {
       </Suspense>
 
       <div className="mt-5 flex w-full justify-center">
-        {/* <Pagination /> */}
+        <Pagination totalPages={totalPages}/>
       </div>
     </div>
   );

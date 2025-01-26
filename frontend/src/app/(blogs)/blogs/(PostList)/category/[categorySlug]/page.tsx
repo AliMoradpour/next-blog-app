@@ -28,7 +28,7 @@ const Category = async ({ params, searchParams }: CategoryProps): Promise<JSX.El
     const options = setCookieOnReq(cookieStore);
 
     // Fetch posts using the provided options
-    const posts = await getPosts(queries, options);
+    const {posts} = await getPosts(queries, options);
 
     return (
       <div>
