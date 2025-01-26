@@ -4,9 +4,12 @@ import SpinnerMini from "@/ui/SpinnerMini";
 import Search from "@/ui/Search";
 import { CreatePost } from "./_/components/Buttons";
 import queryString from "query-string";
+import { getPosts } from "@/services/postServices";
 
-const page = (searchParams : any) => {
+const page = async (searchParams: any) => {
   const query = queryString.stringify(searchParams);
+  const { totalPages } = await getPosts(query);
+
   return (
     <div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-secondary-700 mb-12 items-center">
@@ -17,6 +20,10 @@ const page = (searchParams : any) => {
       <Suspense fallback={<SpinnerMini />} key={query}>
         <PostsTable query={query} />
       </Suspense>
+
+      <div className="mt-5 flex w-full justify-center">
+        {/* <Pagination /> */}
+      </div>
     </div>
   );
 };
