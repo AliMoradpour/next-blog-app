@@ -1,5 +1,5 @@
 import React from "react";
-import { FieldErrors } from "react-hook-form";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 interface Option {
   value: string | number;
@@ -9,11 +9,7 @@ interface Option {
 interface SelectProps {
   label: string;
   name: string;
-  register: (name: string, options?: { required?: boolean }) => {
-    onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-    onBlur: () => void;
-    ref: React.Ref<HTMLSelectElement>;
-  };
+  register: UseFormRegister<any>;
   options: Option[];
   isRequired?: boolean;
   errors?: FieldErrors;
@@ -31,7 +27,7 @@ function RHFSelect({ label, name, register, options, isRequired }: SelectProps) 
         className="textField__input"
       >
         {options.map((option) => (
-          <option  key={option.value} value={option.value}>
+          <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
