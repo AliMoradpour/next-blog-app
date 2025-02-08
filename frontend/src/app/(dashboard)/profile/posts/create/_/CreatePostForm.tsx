@@ -1,33 +1,40 @@
 "use client";
 
 import { useCategories } from "@/hooks/useCategories";
+import Button from "@/ui/Button";
 import ButtonIcon from "@/ui/ButtonIcon";
 import FileInput from "@/ui/FileInput";
 import RHFSelect from "@/ui/RHFSelect";
 import RHFTextField from "@/ui/RHFTextField";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { error } from "console";
 import Image from "next/image";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
+import useCreatePost from "./useCreatePost";
+import SpinnerMini from "@/ui/SpinnerMini";
+import { useRouter } from "next/navigation";
 
-// Define the schema for form validation
 const schema = yup.object({
-  title: yup.string().required("عنوان الزامی است"),
-  briefText: yup.string().required("متن کوتاه الزامی است"),
-  text: yup.string().required("متن الزامی است"),
+  title: yup.string().min(5, "حداقل 5 کاراکتر را وارد کنید").required("عنوان الزامی است"),
+  briefText: yup.string().min(5, "حداقل 5 کاراکتر را وارد کنید").required("متن کوتاه الزامی است"),
+  text: yup.string().min(10, "حداقل 10 کاراکتر را وارد کنید").required("متن الزامی است"),
   slug: yup.string().required("اسلاگ الزامی است"),
-  readingTime: yup.string().required("زمان مطالعه الزامی است"),
+  readingTime: yup.number().positive().integer().required("زمان مطالعه الزامی است").typeError("یک عدد را وارد کنید"),
   category: yup.string().required("دسته بندی الزامی است"),
-  coverImage: yup.mixed().required("کاور پست الزامی است"),
 });
 
 type FormData = yup.InferType<typeof schema>;
 
 const CreatePostForm = () => {
+  const router = useRouter();
+
   const { categories } = useCategories();
   const [coverImageUrl, setCoverImageUrl] = useState<string | null>(null);
+
+  const { createPost, isCreating } = useCreatePost();
 
   const {
     control,
@@ -42,9 +49,15 @@ const CreatePostForm = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
-    reset();
-    setCoverImageUrl(null); // Reset cover image URL on form submission
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+    createPost(formData, {
+      onSuccess: () => {
+        router.push("/profile/posts");
+      },
+    });
   };
 
   return (
@@ -63,6 +76,7 @@ const CreatePostForm = () => {
           <FileInput
             label="انتخاب کاور پست"
             name="coverImage"
+            errors={error}
             isRequired
             {...rest}
             onChange={(event) => {
@@ -88,7 +102,16 @@ const CreatePostForm = () => {
           </ButtonIcon>
         </div>
       )}
-      <button type="submit">Submit</button>
+
+      <div>
+        {isCreating ? (
+          <SpinnerMini />
+        ) : (
+          <Button variant="primary" type="submit">
+            تایید
+          </Button>
+        )}
+      </div>
     </form>
   );
 };

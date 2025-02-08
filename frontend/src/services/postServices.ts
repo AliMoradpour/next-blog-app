@@ -44,3 +44,6 @@ export async function bookmarkPostApi(postId: string) {
     throw error; // Optionally propagate the error
   }
 }
+export async function createPostApi(data: any) {
+  return http.post("/post/create", data).then(({ data }) => data.data);
+}
