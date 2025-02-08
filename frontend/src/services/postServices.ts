@@ -44,6 +44,15 @@ export async function bookmarkPostApi(postId: string) {
     throw error; // Optionally propagate the error
   }
 }
+
 export async function createPostApi(data: any) {
   return http.post("/post/create", data).then(({ data }) => data.data);
+}
+
+export async function editPostApi({ id, data }: { id: any; data: any }) {
+  return http.patch(`/post/update/${id}`, data).then(({ data }) => data.data);
+}
+
+export async function getPostById(id: string) {
+  return http.patch(`/post/${id}`).then(({ data }) => data.data);
 }

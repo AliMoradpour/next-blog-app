@@ -55,6 +55,7 @@ const CreatePostForm = () => {
     }
     createPost(formData, {
       onSuccess: () => {
+import Spinner from "@/ui/Spinner";
         router.push("/profile/posts");
       },
     });
