@@ -3,7 +3,6 @@ import Button from "./Button";
 import { useFormStatus } from "react-dom";
 import SpinnerMini from "./SpinnerMini";
 
-// Define the props type
 interface SubmitButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
 }
@@ -13,10 +12,10 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ children, className = "", .
 
   return (
     <Button
+      variant="primary"
       disabled={pending}
       className={`${className} flex items-center justify-center gap-x-4 py-4 w-full`}
-      {...rest}
-    >
+      {...rest}>
       {children}
       {pending && <SpinnerMini />}
     </Button>

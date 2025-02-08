@@ -52,7 +52,7 @@ const PostRow: React.FC<PostRowProps> = ({ index, post }) => {
       <td>
         <div className="flex items-center gap-x-3">
           <UpdatePost id={post._id} />
-          <DeletePost id={post._id} />
+          <DeletePost post={post} />
         </div>
       </td>
     </Table.Row>
